@@ -261,7 +261,7 @@ module.exports.NoteHandler = class {
 
         // TODO: Make this display part less disgusting...
         // To be fair, I was writing this at midnight or something.
-        const rKeyboard = STRING_CONSTANTS.THICK_LINE + '\n' +
+        const lKeyboard = STRING_CONSTANTS.THICK_LINE + '\n' +
             '|  |' + lSharps.join('|') + '| |\n' +
             '| |' + lFlats.join('|') + '|  |\n' +
             '|' + STRING_CONSTANTS.THIN_LINE + '|\n' +
