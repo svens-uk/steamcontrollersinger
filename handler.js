@@ -258,18 +258,29 @@ module.exports.NoteHandler = class {
         const rCurrentOctave = colors.white.bold((rightChannelOctave < 0 ? '' : '+') + rightChannelOctave);
         const rHigherOctave = colors.grey((rightChannelOctave + 1 < 0 ? '' : '+') + (rightChannelOctave + 1));
 
-        const lKeyboard = STRING_CONSTANTS.THICK_LINE + '\n' +
+
+        // TODO: Make this display part less disgusting...
+        // To be fair, I was writing this at midnight or something.
+        const rKeyboard = STRING_CONSTANTS.THICK_LINE + '\n' +
             '|  |' + lSharps.join('|') + '| |\n' +
             '| |' + lFlats.join('|') + '|  |\n' +
             '|' + STRING_CONSTANTS.THIN_LINE + '|\n' +
-            '|   ' + lLowerOctave + '   ' + lCurrentOctave + '   ' + lHigherOctave + '   |\n' +
+
+            '|   ' + lLowerOctave + (lLowerOctave < 10 ? ' ' : '') + '  ' +
+            lCurrentOctave + (lCurrentOctave < 10 ? ' ' : '') + '  ' +
+            lHigherOctave + (lHigherOctave < 10 ? ' ' : '') + '  |\n' +
+
             STRING_CONSTANTS.THICK_LINE;
 
         const rKeyboard = STRING_CONSTANTS.THICK_LINE + '\n' +
             '|  |' + rSharps.join('|') + '| |\n' +
             '| |' + rFlats.join('|') + '|  |\n' +
             '|' + STRING_CONSTANTS.THIN_LINE + '|\n' +
-            '|   ' + rLowerOctave + '   ' + rCurrentOctave + '   ' + rHigherOctave + '   |\n' +
+
+            '|   ' + rLowerOctave + (rLowerOctave < 10 ? ' ' : '') + '  ' +
+            rCurrentOctave + (rCurrentOctave < 10 ? ' ' : '') + '  ' +
+            rHigherOctave + (rHigherOctave < 10 ? ' ' : '') + '  |\n' +
+
             STRING_CONSTANTS.THICK_LINE;
 
         const kKeyboard = STRING_CONSTANTS.THICK_LINE + '\n' +
