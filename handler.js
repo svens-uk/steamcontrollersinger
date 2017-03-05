@@ -78,22 +78,6 @@ module.exports.playNote = function(controller, haptic, note, duration){
     return Promise.promisify(controller.devHandle.controlTransfer.bind(controller.devHandle))(0x21, 9, 0x0300, 2, dataBlob);
 }
 
-module.exports.printNote = function(leftChannel, rightChannel) {
-    clear();
-    const notes = [' C','C#',' D','D#',' E',' F','F#',' G','G#',' A','A#', 'B'];
-
-    const lNote = (leftChannel !== 0 && leftChannel == null) ? "OFF" : notes[leftChannel%12];
-    const rNote = (rightChannel !== 0 && rightChannel == null) ? "OFF" : notes[rightChannel%12];
-
-    const lOctave = lNote === "OFF" ? ' ' : Math.floor(leftChannel/12) - 1;
-    const rOctave = rNote === "OFF" ? ' ' : Math.floor(rightChannel/12) -1;
-
-    const lSuffix = (lNote === "OFF" || lOctave < 0) ? '' : ' ';
-    const rSuffix = (lNote === "OFF" || rOctave < 0) ? '' : ' ';
-
-    console.log(`LEFT haptic: ${lNote}${lOctave}${lSuffix} | RIGHT haptic: ${rNote}${rOctave}${rSuffix}`);
-}
-
 module.exports.sleep = function(milliseconds) {
     return new Promise((resolve, reject) => {
         setTimeout(resolve, milliseconds);
@@ -274,18 +258,29 @@ module.exports.NoteHandler = class {
         const rCurrentOctave = colors.white.bold((rightChannelOctave < 0 ? '' : '+') + rightChannelOctave);
         const rHigherOctave = colors.grey((rightChannelOctave + 1 < 0 ? '' : '+') + (rightChannelOctave + 1));
 
-        const lKeyboard = STRING_CONSTANTS.THICK_LINE + '\n' +
+
+        // TODO: Make this display part less disgusting...
+        // To be fair, I was writing this at midnight or something.
+        const rKeyboard = STRING_CONSTANTS.THICK_LINE + '\n' +
             '|  |' + lSharps.join('|') + '| |\n' +
             '| |' + lFlats.join('|') + '|  |\n' +
             '|' + STRING_CONSTANTS.THIN_LINE + '|\n' +
-            '|   ' + lLowerOctave + '   ' + lCurrentOctave + '   ' + lHigherOctave + '   |\n' +
+
+            '|   ' + lLowerOctave + (lLowerOctave < 10 ? ' ' : '') + '  ' +
+            lCurrentOctave + (lCurrentOctave < 10 ? ' ' : '') + '  ' +
+            lHigherOctave + (lHigherOctave < 10 ? ' ' : '') + '  |\n' +
+
             STRING_CONSTANTS.THICK_LINE;
 
         const rKeyboard = STRING_CONSTANTS.THICK_LINE + '\n' +
             '|  |' + rSharps.join('|') + '| |\n' +
             '| |' + rFlats.join('|') + '|  |\n' +
             '|' + STRING_CONSTANTS.THIN_LINE + '|\n' +
-            '|   ' + rLowerOctave + '   ' + rCurrentOctave + '   ' + rHigherOctave + '   |\n' +
+
+            '|   ' + rLowerOctave + (rLowerOctave < 10 ? ' ' : '') + '  ' +
+            rCurrentOctave + (rCurrentOctave < 10 ? ' ' : '') + '  ' +
+            rHigherOctave + (rHigherOctave < 10 ? ' ' : '') + '  |\n' +
+
             STRING_CONSTANTS.THICK_LINE;
 
         const kKeyboard = STRING_CONSTANTS.THICK_LINE + '\n' +
